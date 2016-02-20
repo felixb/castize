@@ -13,8 +13,7 @@
 # castize.sh /home/user/your_videos /home/user/chromecast_videos
 #########################
 clear
-#set your email for notifications
-email=user@email.com
+#set your email for notifications by setting CASTIZE_EMAIL=your@e.mail
 
 # Check FFMPEG Installation
 
@@ -203,7 +202,9 @@ do
         ffmpeg -i $filelist -codec:v $vcodec -tune -film -codec:a $acodec -b:a 384k -movflags +faststart $indir/CCast_Videos/$destfile.CCast.$outmode
 
 # sending a mail after conversion
-        echo $destfile "convertion has completed" | /usr/sbin/sendmail -F ffmpeg@castize $email
+  if [ -n "${CASTIZE_EMAIL}" ]; then
+    echo $destfile "convertion has completed" | /usr/sbin/sendmail -F ffmpeg@castize "${CASTIZE_EMAIL}"
+  fi
 
 
 done
